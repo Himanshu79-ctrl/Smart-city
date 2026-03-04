@@ -1,0 +1,215 @@
+/* Dashboard Specific Styles */
+.dashboard-welcome {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+    border-radius: 20px;
+    color: white;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.stat-card {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    height: 100%;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.15);
+}
+
+.stat-icon {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    margin: 0 auto 1rem;
+    color: white;
+}
+
+.issue-list .list-group-item {
+    border: none;
+    border-bottom: 1px solid #eee;
+    padding: 1.25rem;
+    transition: all 0.3s ease;
+}
+
+.issue-list .list-group-item:hover {
+    background-color: #f8f9fa;
+}
+
+.issue-list .list-group-item:last-child {
+    border-bottom: none;
+}
+
+.quick-actions .btn {
+    margin-bottom: 0.5rem;
+    text-align: left;
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.quick-actions .btn:hover {
+    transform: translateX(5px);
+}
+
+.level-badge {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.8rem;
+    font-weight: 600;
+}
+
+.progress {
+    height: 8px;
+    margin-top: 0.5rem;
+    border-radius: 10px;
+    background-color: #e9ecef;
+    overflow: hidden;
+}
+
+.progress-bar {
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+/* Dashboard specific card styles */
+.dashboard-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-card .card-header {
+    background-color: white;
+    border-bottom: 1px solid #eee;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    border-radius: 15px 15px 0 0 !important;
+}
+
+/* Stats background colors for different categories */
+.stat-reported {
+    background: linear-gradient(135deg, #4361ee, #3a0ca3);
+}
+
+.stat-resolved {
+    background: linear-gradient(135deg, #28a745, #20c997);
+}
+
+.stat-progress {
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+}
+
+.stat-points {
+    background: linear-gradient(135deg, #17a2b8, #0dcaf0);
+}
+
+/* Badge styles for issue status */
+.badge-issue-resolved {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge-issue-progress {
+    background-color: #ffc107;
+    color: black;
+}
+
+.badge-issue-assigned {
+    background-color: #007bff;
+    color: white;
+}
+
+.badge-issue-pending {
+    background-color: #6c757d;
+    color: white;
+}
+
+/* Monthly stats section */
+.monthly-stats {
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border-left: 4px solid #4361ee;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-welcome {
+        padding: 1.5rem;
+        text-align: center;
+    }
+    
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .quick-actions .btn {
+        text-align: center;
+    }
+    
+    .issue-list .list-group-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .issue-list .list-group-item .text-end {
+        text-align: center !important;
+        margin-top: 1rem;
+    }
+}
+
+/* Animation for dashboard elements */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.dashboard-element {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+/* Custom scrollbar for issue list */
+.issue-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.issue-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.issue-list::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.issue-list::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+.issue-list::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}

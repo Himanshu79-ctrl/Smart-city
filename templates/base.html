@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}SmartCity - Build Better Cities{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    {% block extra_css %}{% endblock %}
+</head>
+
+<body class="bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white min-h-screen">
+
+<!-- 🔥 Dark Glass Navbar -->
+<nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-black/40 border-b border-gray-800 shadow-xl">
+    <div class="max-w-7xl mx-auto px-6">
+        <div class="flex justify-between items-center h-16">
+
+            <!-- Logo -->
+            <a href="{% url 'home' %}" 
+               class="text-3xl font-extrabold text-white tracking-wide hover:text-indigo-400 transition">
+                Smart <span class="text-indigo-500">City</span>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden md:flex items-center gap-6">
+
+                {% if user.is_authenticated and user.user_type == 'is_superuser' %}
+                    <a href="{% url 'admin_dashboard' %}" 
+                       class="nav-link">Admin Dashboard</a>
+
+                {% elif user.is_authenticated %}
+                    <a href="{% url 'home' %}" class="nav-link">Home</a>
+                    <a href="{% url 'report_issue' %}" class="nav-link">Report Issue</a>
+                    <a href="#" class="nav-link text-red-400">Emergency</a>
+                    <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
+                    <a href="{% url 'rewards_dashboard' %}" class="nav-link">Rewards</a>
+                {% endif %}
+            </div>
+
+            <!-- Right Side -->
+            <div class="hidden md:flex items-center gap-4">
+
+                {% if user.is_authenticated %}
+                <div class="relative group">
+                    <button class="flex items-center gap-2 text-gray-300 hover:text-indigo-400 transition font-medium">
+                        👤 {{ user.username }}
+                    </button>
+
+                    <!-- Dropdown -->
+                    <div class="absolute right-0 mt-3 w-52 bg-gray-900 rounded-2xl shadow-2xl border border-gray-700
+                                opacity-0 invisible group-hover:opacity-100 group-hover:visible
+                                transition duration-200">
+
+                        {% if user.user_type != 'admin' %}
+                        <a href="{% url 'profile' %}" 
+                           class="dropdown-item">Profile</a>
+
+                        <a href="{% url 'my_issues' %}" 
+                           class="dropdown-item">My Issues</a>
+
+                        <hr class="my-1 border-gray-700">
+                        {% endif %}
+
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit" 
+                                class="dropdown-item w-full text-left text-red-400">
+                                Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                {% else %}
+                <a href="{% url 'login' %}" class="nav-link">
+                    Login
+                </a>
+
+                <a href="{% url 'register' %}"
+                   class="px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold 
+                          hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/30">
+                    Sign Up
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- 📦 Main Content -->
+<main class="pt-24 min-h-[80vh] px-4">
+    {% block content %}{% endblock %}
+</main>
+
+<!-- 🌙 Dark Footer -->
+<footer class="mt-20 bg-black border-t border-gray-800 py-10">
+    <div class="max-w-6xl mx-auto px-6 text-center text-gray-400">
+        <h3 class="text-lg font-semibold text-white mb-2">🏙 SmartCity Platform</h3>
+        <p class="text-sm">
+            Building better cities through citizen participation
+        </p>
+        <p class="mt-4 text-xs text-gray-600">
+            © 2024 SmartCity Platform. All rights reserved.
+        </p>
+    </div>
+</footer>
+
+<style>
+.nav-link {
+    color: #d1d5db;
+    font-weight: 500;
+    transition: 0.3s;
+}
+.nav-link:hover {
+    color: #818cf8;
+}
+
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: #d1d5db;
+    transition: 0.2s;
+}
+.dropdown-item:hover {
+    background: #1f2937;
+    color: white;
+}
+</style>
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

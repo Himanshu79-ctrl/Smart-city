@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+{% block title %}My Issues - CityPulse{% endblock %}
+
+{% block content %}
+
+<section class="max-w-7xl mx-auto px-6 pt-28 pb-24">
+
+    <!-- Header -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12">
+
+        <div>
+            <h1 class="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+                My Reported Issues
+            </h1>
+            <p class="mt-2 text-gray-600 dark:text-gray-400">
+                Track and manage your civic contributions
+            </p>
+        </div>
+
+        <a href="{% url 'report_issue' %}"
+           class="px-6 py-3 bg-indigo-600 hover:bg-indigo-500
+                  text-white rounded-2xl shadow-lg
+                  hover:scale-105 transition">
+            + Report New Issue
+        </a>
+
+    </div>
+
+
+    <!-- Issues Grid -->
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+        {% for issue in issues %}
+        <div class="group bg-white dark:bg-white/5
+                    border border-gray-200 dark:border-white/10
+                    backdrop-blur-xl rounded-3xl
+                    shadow-md hover:shadow-xl
+                    transition hover:-translate-y-2 overflow-hidden">
+
+            {% if issue.photo %}
+            <div class="h-40 overflow-hidden">
+                <img src="{{ issue.photo.url }}"
+                     class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+            {% endif %}
+
+            <div class="p-6">
+
+                <div class="flex justify-between items-start mb-3">
+                    <h3 class="font-semibold text-lg text-gray-900 dark:text-white">
+                        {{ issue.title }}
+                    </h3>
+
+                    <span class="text-xs px-3 py-1 rounded-full
+                                 bg-indigo-100 text-indigo-600
+                                 dark:bg-indigo-500/20 dark:text-indigo-300">
+                        {{ issue.tracking_id }}
+                    </span>
+                </div>
+
+                <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">
+                    {{ issue.description|truncatewords:18 }}
+                </p>
+
+                <div class="flex justify-between items-center mb-4">
+
+                    <span class="px-3 py-1 text-xs rounded-full
+                        {% if issue.status == 'resolved' %}
+                            bg-green-100 text-green-600 dark:bg-green-500/20 dark:text-green-300
+                        {% elif issue.status == 'in_progress' %}
+                            bg-yellow-100 text-yellow-600 dark:bg-yellow-500/20 dark:text-yellow-300
+                        {% else %}
+                            bg-gray-200 text-gray-600 dark:bg-gray-500/20 dark:text-gray-300
+                        {% endif %}">
+                        {{ issue.get_status_display }}
+                    </span>
+
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                        {{ issue.created_at|timesince }} ago
+                    </span>
+
+                </div>
+
+                <a href="{% url 'track_issue' issue.tracking_id %}"
+                   class="block text-center py-2 rounded-xl
+                          border border-indigo-500
+                          text-indigo-600 dark:text-indigo-400
+                          hover:bg-indigo-600 hover:text-white
+                          transition text-sm font-medium">
+                    Track Progress →
+                </a>
+
+            </div>
+
+        </div>
+
+        {% empty %}
+        <div class="col-span-full">
+
+            <div class="bg-white dark:bg-white/5
+                        border border-gray-200 dark:border-white/10
+                        backdrop-blur-xl rounded-3xl
+                        p-16 text-center shadow-lg">
+
+                <div class="text-6xl mb-6">📭</div>
+
+                <h3 class="text-2xl font-semibold text-gray-900 dark:text-white">
+                    No Issues Reported Yet
+                </h3>
+
+                <p class="mt-3 text-gray-600 dark:text-gray-400">
+                    Start contributing to your city by reporting your first issue.
+                </p>
+
+                <a href="{% url 'report_issue' %}"
+                   class="inline-block mt-6 px-6 py-3 bg-indigo-600
+                          hover:bg-indigo-500 text-white
+                          rounded-2xl shadow-lg transition">
+                    Report Your First Issue
+                </a>
+
+            </div>
+
+        </div>
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

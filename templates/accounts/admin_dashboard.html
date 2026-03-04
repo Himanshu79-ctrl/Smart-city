@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="max-w-7xl mx-auto px-6 py-16">
+
+    <h1 class="text-4xl font-bold text-center mb-12">
+        Super Admin Control Panel
+    </h1>
+
+    <!-- ================= STATS ================= -->
+    <div class="grid md:grid-cols-4 gap-6 mb-16">
+
+        <div class="bg-indigo-600 text-white p-6 rounded-3xl text-center">
+            <h2 class="text-3xl font-bold">{{ total_issues }}</h2>
+            <p>Total Issues</p>
+        </div>
+
+        <div class="bg-yellow-500 text-white p-6 rounded-3xl text-center">
+            <h2 class="text-3xl font-bold">{{ pending_issues }}</h2>
+            <p>Pending</p>
+        </div>
+
+        <div class="bg-green-600 text-white p-6 rounded-3xl text-center">
+            <h2 class="text-3xl font-bold">{{ resolved_issues }}</h2>
+            <p>Resolved</p>
+        </div>
+
+        <div class="bg-pink-600 text-white p-6 rounded-3xl text-center">
+            <h2 class="text-3xl font-bold">{{ today_issues }}</h2>
+            <p>Today's Reports</p>
+        </div>
+
+    </div>
+
+    <!-- ================= USERS STATS ================= -->
+    <div class="grid md:grid-cols-2 gap-6 mb-16">
+
+        <div class="bg-purple-600 text-white p-6 rounded-3xl text-center">
+            <h2 class="text-3xl font-bold">{{ total_staff }}</h2>
+            <p>Total Department Staff</p>
+        </div>
+
+        <div class="bg-gray-800 text-white p-6 rounded-3xl text-center">
+            <h2 class="text-3xl font-bold">{{ total_citizens }}</h2>
+            <p>Total Citizens</p>
+        </div>
+
+    </div>
+
+    <!-- ================= FILTER ================= -->
+    <form method="GET" class="flex flex-wrap gap-4 mb-10">
+
+        <select name="city" class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white">
+            <option value="">All Cities</option>
+            {% for c in all_cities %}
+            <option value="{{ c }}">{{ c }}</option>
+            {% endfor %}
+        </select>
+
+        <select name="status" class="px-4 py-2 rounded-xl bg-white/10 border border-white/20 text-white">
+            <option value="">All Status</option>
+            <option value="pending">Pending</option>
+            <option value="resolved">Resolved</option>
+        </select>
+
+        <button type="submit"
+                class="bg-indigo-600 text-white px-6 py-2 rounded-xl">
+            Apply Filter
+        </button>
+
+    </form>
+
+    <!-- ================= RECENT ISSUES ================= -->
+    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-16">
+
+        <h2 class="text-2xl font-semibold mb-6">Recent Issues</h2>
+
+        <table class="w-full text-left">
+            <thead>
+                <tr class="border-b border-white/10">
+                    <th class="py-3">Title</th>
+                    <th>City</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for issue in issues %}
+                <tr class="border-b border-white/5">
+                    <td class="py-3">{{ issue.title }}</td>
+                    <td>{{ issue.city }}</td>
+                    <td>{{ issue.status }}</td>
+                    <td>
+                        <a href="{% url 'admin:reports_issuereport_change' issue.id %}"
+                           class="text-indigo-400 hover:underline">
+                            Edit
+                        </a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="py-4 text-center text-gray-400">
+                        No issues found.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+
+    <!-- ================= QUICK ACTIONS ================= -->
+    <div class="grid md:grid-cols-3 gap-6">
+
+        <a href="{% url 'admin:reports_issuereport_add' %}"
+           class="bg-green-600 text-white p-6 rounded-2xl text-center hover:scale-105 transition">
+            ➕ Add New Issue
+        </a>
+
+        <a href="{% url 'staff_register' %}"
+           class="bg-purple-600 text-white p-6 rounded-2xl text-center hover:scale-105 transition">
+            👤 Add Department Staff
+        </a>
+
+        <a href="{% url 'admin:index' %}"
+           class="bg-gray-900 text-white p-6 rounded-2xl text-center hover:scale-105 transition">
+            ⚙ Open Django Admin
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}

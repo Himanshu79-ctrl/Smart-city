@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block title %}My Profile - CityPulse{% endblock %}
+
+{% block content %}
+
+<section class="max-w-5xl mx-auto px-6 pt-28 pb-24">
+
+    <div class="bg-white dark:bg-white/5
+                border border-gray-200 dark:border-white/10
+                backdrop-blur-xl rounded-3xl shadow-xl p-10">
+
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
+
+            <!-- Left -->
+            <div class="text-center md:text-left">
+                <div class="w-24 h-24 rounded-full
+                            bg-indigo-600 text-white
+                            flex items-center justify-center
+                            text-3xl font-bold mx-auto md:mx-0">
+                    {{ user.username|first|upper }}
+                </div>
+
+                <h2 class="mt-4 text-2xl font-bold text-gray-900 dark:text-white">
+                    {{ user.username }}
+                </h2>
+
+                <span class="inline-block mt-2 px-4 py-1 rounded-full text-sm
+                             bg-indigo-100 text-indigo-600
+                             dark:bg-indigo-500/20 dark:text-indigo-300">
+                    {{ user.get_user_type_display }}
+                </span>
+            </div>
+
+            <!-- Right -->
+            <div class="flex-1 grid md:grid-cols-2 gap-6">
+
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Email</p>
+                    <p class="font-medium text-gray-900 dark:text-white">
+                        {{ user.email }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Phone</p>
+                    <p class="font-medium text-gray-900 dark:text-white">
+                        {{ user.phone }}
+                    </p>
+                </div>
+
+                <div class="md:col-span-2">
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Address</p>
+                    <p class="font-medium text-gray-900 dark:text-white">
+                        {{ user.address }}
+                    </p>
+                </div>
+
+                <div>
+                    <p class="text-sm text-gray-500 dark:text-gray-400">Member Since</p>
+                    <p class="font-medium text-gray-900 dark:text-white">
+                        {{ user.date_joined|date:"F d, Y" }}
+                    </p>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

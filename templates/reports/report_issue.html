@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block title %}Report Issue - CityPulse{% endblock %}
+
+{% block content %}
+
+<section class="max-w-4xl mx-auto px-6 pt-28 pb-24">
+
+    <div class="rounded-3xl p-10
+                bg-white dark:bg-white/5
+                border border-gray-200 dark:border-white/10
+                backdrop-blur-xl shadow-2xl">
+
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">
+            Report a Civic Issue
+        </h1>
+
+        <form method="post" enctype="multipart/form-data" class="space-y-8">
+            {% csrf_token %}
+
+            <!-- Title -->
+            <div>
+                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+                    Issue Title
+                </label>
+                <input type="text" name="title" required
+                       placeholder="Broken street light near main market"
+                       class="w-full px-4 py-3 rounded-xl
+                              bg-gray-50 dark:bg-white/5
+                              border border-gray-300 dark:border-white/20
+                              text-gray-900 dark:text-white
+                              focus:outline-none focus:ring-2 focus:ring-indigo-500">
+            </div>
+
+            <!-- Category -->
+            <div>
+                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+                    Category
+                </label>
+                <select name="category" required class="w-full px-4 py-3 rounded-xl
+                               bg-gray-50 dark:bg-gray-800
+                               border border-gray-300 dark:border-white/20
+                               text-gray-900 dark:text-white
+                               appearance-none
+                               focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                
+                    <option value="">Select category</option>
+                    <option value="pothole">Pothole</option>
+                    <option value="garbage">Garbage</option>
+                    <option value="street_light">Street Light</option>
+                    <option value="water">Water Supply</option>
+                    <option value="drainage">Drainage</option>
+                    <option value="other">Other</option>
+                </select>
+                
+                
+            </div>
+
+            <!-- Description -->
+            <div>
+                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+                    Description
+                </label>
+                <textarea name="description" rows="4" required
+                          placeholder="Describe the issue in detail..."
+                          class="w-full px-4 py-3 rounded-xl
+                                 bg-gray-50 dark:bg-white/5
+                                 border border-gray-300 dark:border-white/20
+                                 text-gray-900 dark:text-white
+                                 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            </div>
+
+            <!-- Location -->
+            <div>
+                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+                    Location Address
+                </label>
+                <textarea name="location_address" rows="3" required
+                          placeholder="Enter exact location..."
+                          class="w-full px-4 py-3 rounded-xl
+                                 bg-gray-50 dark:bg-white/5
+                                 border border-gray-300 dark:border-white/20
+                                 text-gray-900 dark:text-white
+                                 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+            </div>
+
+            <!-- Media Upload -->
+            <div>
+                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
+                    Upload Photo (Optional)
+                </label>
+
+                <label class="flex flex-col items-center justify-center
+                              border-2 border-dashed
+                              border-indigo-300 dark:border-white/20
+                              rounded-2xl p-10 cursor-pointer
+                              hover:bg-indigo-50 dark:hover:bg-white/5 transition">
+
+                    <span class="text-gray-600 dark:text-gray-400">
+                        Click to upload image
+                    </span>
+
+                    <input type="file" name="photo" accept="image/*"
+                           class="hidden" id="photo-input">
+                </label>
+
+                <div id="photo-preview" class="mt-4 flex gap-3 flex-wrap"></div>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit"
+                    class="w-full py-4 rounded-2xl font-semibold
+                           bg-indigo-600 hover:bg-indigo-500
+                           text-white shadow-lg
+                           hover:scale-[1.02] transition">
+                Submit Report
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
+
+{% endblock %}
