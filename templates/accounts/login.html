@@ -1,99 +1,131 @@
 {% extends 'base.html' %}
+{% load socialaccount %}
 {% block title %}Login - CityPulse{% endblock %}
 
 {% block content %}
 
-<section class="min-h-screen flex items-center justify-center px-6 py-24">
+<!-- Add this custom class to remove padding-top only for login page -->
+<main class="pt-0 min-h-[80vh] px-4" style="padding-top: 0 !important;">
 
-    <div class="w-full max-w-md 
-                bg-white/5 backdrop-blur-xl
-                border border-white/10
-                rounded-3xl shadow-2xl overflow-hidden">
+    <section class="min-h-[80vh] flex items-center justify-center">
 
-        <!-- Header -->
-        <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-10 text-center">
-            <h2 class="text-3xl font-bold text-white">Welcome Back 👋</h2>
-            <p class="mt-2 text-indigo-100">Login to continue your civic journey</p>
+        <div class="w-full max-w-md 
+                    bg-white/5 backdrop-blur-xl
+                    border border-white/10
+                    rounded-3xl shadow-2xl overflow-hidden">
+
+            <!-- Header -->
+            <div class="bg-gradient-to-r from-indigo-600 to-purple-600 p-8 text-center">
+                <h2 class="text-3xl font-bold text-white">Welcome Back 👋</h2>
+                <p class="mt-2 text-indigo-100">Login to continue your civic journey</p>
+            </div>
+
+            <!-- Form -->
+            <form method="POST" class="p-8 space-y-6">
+                {% csrf_token %}
+
+                {% if form.errors %}
+                <div class="bg-red-500/20 border border-red-500/30 
+                            text-red-300 px-4 py-3 rounded-xl text-sm">
+                    Invalid username or password.
+                </div>
+                {% endif %}
+
+                <!-- Username -->
+                <div>
+                    <label class="block text-sm mb-2 text-gray-300">
+                        Username
+                    </label>
+                    <input type="text" name="username" required
+                        class="w-full px-4 py-3 rounded-xl 
+                               bg-white/10 border border-white/20
+                               focus:outline-none focus:ring-2 focus:ring-indigo-500
+                               text-white placeholder-gray-400
+                               transition">
+                </div>
+
+                <!-- Password -->
+                <div>
+                    <label class="block text-sm mb-2 text-gray-300">
+                        Password
+                    </label>
+                    <input type="password" name="password" required
+                        class="w-full px-4 py-3 rounded-xl 
+                               bg-white/10 border border-white/20
+                               focus:outline-none focus:ring-2 focus:ring-indigo-500
+                               text-white placeholder-gray-400
+                               transition">
+                </div>
+
+                <!-- Remember + Forgot -->
+                <div class="flex items-center justify-between text-sm">
+
+                    <label class="flex items-center gap-2 text-gray-400 cursor-pointer">
+                        <input type="checkbox" name="remember_me" class="rounded bg-white/10 border-white/20">
+                        Remember me
+                    </label>
+
+                    <a href="{% url 'password_reset' %}" class="text-indigo-400 hover:text-indigo-300 transition">
+                        Forgot password?
+                    </a>
+
+                </div>
+
+                <!-- Submit -->
+                <button type="submit"
+                    class="w-full py-3 rounded-2xl
+                           bg-gradient-to-r from-indigo-600 to-purple-600
+                           hover:from-indigo-500 hover:to-purple-500
+                           text-white font-semibold text-lg
+                           transition transform hover:scale-[1.02] shadow-lg">
+                    Sign In
+                </button>
+                
+                <!-- Divider -->
+                <div class="flex items-center gap-4">
+                    <div class="flex-1 h-px bg-white/20"></div>
+                    <span class="text-gray-400 text-sm">OR</span>
+                    <div class="flex-1 h-px bg-white/20"></div>
+                </div>
+
+                <!-- Google Login -->
+                <a href="{% provider_login_url 'google' process='login' prompt='select_account' %}" class="flex items-center justify-center gap-3 w-full py-3 rounded-2xl
+                          bg-gray-700 text-white font-medium
+                          hover:bg-gray-500  transition shadow">
+
+                    <!-- Google Icon -->
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20">
+                        <path fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.72 1.22 9.23 3.6l6.9-6.9C35.82 2.3 30.33 0 24 0 14.82 0 6.73 5.48 3.06 13.44l8.05 6.25C13.06 13.16 18.07 9.5 24 9.5z" />
+                        <path fill="#4285F4"
+                            d="M46.5 24.5c0-1.64-.15-3.22-.43-4.75H24v9h12.7c-.55 2.97-2.22 5.49-4.73 7.19l7.3 5.68C43.88 37.45 46.5 31.45 46.5 24.5z" />
+                        <path fill="#FBBC05"
+                            d="M11.11 28.31a14.6 14.6 0 010-8.62l-8.05-6.25A23.93 23.93 0 000 24c0 3.82.92 7.44 2.56 10.56l8.55-6.25z" />
+                        <path fill="#34A853"
+                            d="M24 48c6.48 0 11.92-2.15 15.9-5.85l-7.3-5.68c-2.03 1.36-4.63 2.16-8.6 2.16-5.93 0-10.94-3.66-12.73-8.69l-8.55 6.25C6.73 42.52 14.82 48 24 48z" />
+                    </svg>
+                
+                    Login with Google
+                </a>
+
+                <!-- Register -->
+                <div class="text-center pt-4">
+                    <p class="text-gray-400">
+                        Don’t have an account?
+                    </p>
+                    <a href="{% url 'register' %}"
+                       class="inline-block mt-3 px-6 py-2 rounded-xl
+                              border border-indigo-500 text-indigo-400
+                              hover:bg-indigo-600 hover:text-white transition">
+                        Create Account
+                    </a>
+                </div>
+
+            </form>
+
         </div>
 
-        <!-- Form -->
-        <form method="POST" class="p-8 space-y-6">
-            {% csrf_token %}
+    </section>
 
-            {% if form.errors %}
-            <div class="bg-red-500/20 border border-red-500/30 
-                        text-red-300 px-4 py-3 rounded-xl text-sm">
-                Invalid username or password.
-            </div>
-            {% endif %}
-
-            <!-- Username -->
-            <div>
-                <label class="block text-sm mb-2 text-gray-300">
-                    Username
-                </label>
-                <input type="text" name="username" required
-                    class="w-full px-4 py-3 rounded-xl 
-                           bg-white/10 border border-white/20
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500
-                           text-white placeholder-gray-400
-                           transition">
-            </div>
-
-            <!-- Password -->
-            <div>
-                <label class="block text-sm mb-2 text-gray-300">
-                    Password
-                </label>
-                <input type="password" name="password" required
-                    class="w-full px-4 py-3 rounded-xl 
-                           bg-white/10 border border-white/20
-                           focus:outline-none focus:ring-2 focus:ring-indigo-500
-                           text-white placeholder-gray-400
-                           transition">
-            </div>
-
-            <!-- Remember + Forgot -->
-            <div class="flex items-center justify-between text-sm">
-
-                <label class="flex items-center gap-2 text-gray-400 cursor-pointer">
-                    <input type="checkbox" class="rounded bg-white/10 border-white/20">
-                    Remember me
-                </label>
-
-                <a href="#" class="text-indigo-400 hover:text-indigo-300 transition">
-                    Forgot password?
-                </a>
-
-            </div>
-
-            <!-- Submit -->
-            <button type="submit"
-                class="w-full py-3 rounded-2xl
-                       bg-gradient-to-r from-indigo-600 to-purple-600
-                       hover:from-indigo-500 hover:to-purple-500
-                       text-white font-semibold text-lg
-                       transition transform hover:scale-[1.02] shadow-lg">
-                Sign In
-            </button>
-
-            <!-- Register -->
-            <div class="text-center pt-4">
-                <p class="text-gray-400">
-                    Don’t have an account?
-                </p>
-                <a href="{% url 'register' %}"
-                   class="inline-block mt-3 px-6 py-2 rounded-xl
-                          border border-indigo-500 text-indigo-400
-                          hover:bg-indigo-600 hover:text-white transition">
-                    Create Account
-                </a>
-            </div>
-
-        </form>
-
-    </div>
-
-</section>
-
+</main>
 {% endblock %}

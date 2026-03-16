@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='reward',
             name='reward_type',
-            field=models.CharField(choices=[('movie_ticket', 'Movie Ticket'), ('shopping_voucher', 'Shopping Voucher'), ('food_coupon', 'Food Coupon'), ('gift_card', 'Gift Card'), ('cashback', 'Cashback')], default=django.utils.timezone.now, max_length=20),
+            field=models.CharField(choices=[('movie_ticket', 'Movie Ticket'), ('shopping_voucher', 'Shopping Voucher'), ('food_coupon', 'Food Coupon'), ('gift_card', 'Gift Card'), ('cashback', 'Cashback')], default=django.utils.timezone.now, max_length=50),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -44,13 +44,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='citizenprofile',
             name='level',
-            field=models.CharField(choices=[('beginner', 'Beginner'), ('contributor', 'Contributor'), ('champion', 'Champion'), ('hero', 'Hero')], default='beginner', max_length=20),
+            field=models.CharField(choices=[('beginner', 'Beginner'), ('contributor', 'Contributor'), ('champion', 'Champion'), ('hero', 'Hero')], default='beginner', max_length=50),
         ),
         migrations.CreateModel(
             name='PointsTransaction',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('transaction_type', models.CharField(choices=[('issue_reported', 'Issue Reported'), ('issue_resolved', 'Issue Resolved'), ('reward_claimed', 'Reward Claimed'), ('bonus', 'Bonus')], max_length=20)),
+                ('transaction_type', models.CharField(choices=[('issue_reported', 'Issue Reported'), ('issue_resolved', 'Issue Resolved'), ('reward_claimed', 'Reward Claimed'), ('bonus', 'Bonus')], max_length=50)),
                 ('points', models.IntegerField()),
                 ('description', models.TextField()),
                 ('created_at', models.DateTimeField(auto_now_add=True)),

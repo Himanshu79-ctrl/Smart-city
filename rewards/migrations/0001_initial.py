@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('total_points', models.IntegerField(default=0)),
-                ('level', models.CharField(default='beginner', max_length=20)),
+                ('level', models.CharField(default='beginner', max_length=30)),
                 ('issues_reported', models.IntegerField(default=0)),
                 ('issues_resolved', models.IntegerField(default=0)),
                 ('user', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),

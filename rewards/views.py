@@ -1,13 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import CitizenProfile, Reward, RewardRedemption, PointsTransaction
+from .models import CitizenRewardProfile, Reward, RewardRedemption, PointsTransaction
 
 @login_required
 def rewards_dashboard(request):
-    profile, created = CitizenProfile.objects.get_or_create(user=request.user)
-    transactions = PointsTransaction.objects.filter(user=request.user).order_by('-created_at')[:10]
-    available_rewards = Reward.objects.filter(is_active=True, stock__gt=0)
+    profile, created = CitizenRewardProfile.objects.get_or_create(user=request.user)
+    transactions = PointsTransaction.objects.filter(user=request.user).order_by('-created_at')
+    available_rewards = Reward.objects.all()
     
     context = {
         'profile': profile,
@@ -25,7 +25,7 @@ def rewards_dashboard(request):
 @login_required
 def rewards_list(request):
     rewards = Reward.objects.filter(is_active=True, stock__gt=0)
-    profile = CitizenProfile.objects.get(user=request.user)
+    profile = CitizenRewardProfile.objects.get(user=request.user)
     
     return render(request, 'rewards/rewards_list.html', {
         'rewards': rewards,
@@ -37,7 +37,7 @@ def redeem_reward(request, reward_id):
     if request.method == 'POST':
         try:
             reward = Reward.objects.get(id=reward_id, is_active=True, stock__gt=0)
-            profile = CitizenProfile.objects.get(user=request.user)
+            profile = CitizenRewardProfile.objects.get(user=request.user)
             
             if profile.total_points >= reward.points_required:
                 # Create redemption
@@ -81,5 +81,5 @@ def my_rewards(request):
 
 @login_required
 def leaderboard(request):
-    top_citizens = CitizenProfile.objects.order_by('-total_points')[:20]
+    top_citizens = CitizenRewardProfile.objects.order_by('-total_points')[:20]
     return render(request, 'rewards/leaderboard.html', {'top_citizens': top_citizens})

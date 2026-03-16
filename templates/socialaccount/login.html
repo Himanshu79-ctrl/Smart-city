@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load socialaccount %}
+
+{% block title %}Continue with Google{% endblock %}
+
+{% block content %}
+
+<main class="min-h-[80vh] flex items-center justify-center px-4">
+
+<div class="w-full max-w-md 
+            bg-white/5 backdrop-blur-xl
+            border border-white/10
+            rounded-3xl shadow-2xl p-8 text-center">
+
+    <h2 class="text-2xl font-bold text-white mb-2">
+        Continue with Google
+    </h2>
+
+    <p class="text-gray-400 mb-6">
+        You are about to sign in using your Google account.
+    </p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <button type="submit"
+        class="flex items-center justify-center gap-3 w-full py-3 rounded-xl
+               bg-gray-900 text-white font-medium hover:bg-gray-700 transition">
+
+            <!-- Google Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="20">
+                <path fill="#EA4335"
+                d="M24 9.5c3.54 0 6.72 1.22 9.23 3.6l6.9-6.9C35.82 2.3 30.33 0 24 0 14.82 0 6.73 5.48 3.06 13.44l8.05 6.25C13.06 13.16 18.07 9.5 24 9.5z"/>
+                <path fill="#4285F4"
+                d="M46.5 24.5c0-1.64-.15-3.22-.43-4.75H24v9h12.7c-.55 2.97-2.22 5.49-4.73 7.19l7.3 5.68C43.88 37.45 46.5 31.45 46.5 24.5z"/>
+                <path fill="#FBBC05"
+                d="M11.11 28.31a14.6 14.6 0 010-8.62l-8.05-6.25A23.93 23.93 0 000 24c0 3.82.92 7.44 2.56 10.56l8.55-6.25z"/>
+                <path fill="#34A853"
+                d="M24 48c6.48 0 11.92-2.15 15.9-5.85l-7.3-5.68c-2.03 1.36-4.63 2.16-8.6 2.16-5.93 0-10.94-3.66-12.73-8.69l-8.55 6.25C6.73 42.52 14.82 48 24 48z"/>
+            </svg>
+
+            Continue with Google
+        </button>
+
+    </form>
+
+</div>
+
+</main>
+
+{% endblock %}

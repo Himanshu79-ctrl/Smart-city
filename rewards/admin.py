@@ -1,8 +1,8 @@
 # rewards/admin.py
 from django.contrib import admin
-from .models import CitizenProfile, PointsTransaction, Reward, RewardRedemption
+from .models import CitizenRewardProfile, PointsTransaction, Reward, RewardRedemption
 
-admin.site.register(CitizenProfile)
+admin.site.register(CitizenRewardProfile)
 admin.site.register(Reward)
 admin.site.register(RewardRedemption)
 admin.site.register(PointsTransaction)

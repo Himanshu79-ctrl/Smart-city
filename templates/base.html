@@ -1,136 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <title>{% block title %}SmartCity - Build Better Cities{% endblock %}</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>{% block title %}SmartCity{% endblock %}</title>
 
-    <!-- Tailwind -->
-    <script src="https://cdn.tailwindcss.com"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {% block extra_css %}{% endblock %}
+<script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
-<body class="bg-gradient-to-br from-gray-950 via-black to-gray-900 text-white min-h-screen">
+<body class="bg-gray-950 text-white min-h-screen">
 
-<!-- 🔥 Dark Glass Navbar -->
-<nav class="fixed top-0 left-0 w-full z-50 backdrop-blur-xl bg-black/40 border-b border-gray-800 shadow-xl">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="flex justify-between items-center h-16">
+<!-- NAVBAR -->
 
-            <!-- Logo -->
-            <a href="{% url 'home' %}" 
-               class="text-3xl font-extrabold text-white tracking-wide hover:text-indigo-400 transition">
-                Smart <span class="text-indigo-500">City</span>
-            </a>
+<nav class="fixed top-0 w-full bg-black/50 backdrop-blur border-b border-gray-800 z-50">
 
-            <!-- Desktop Menu -->
-            <div class="hidden md:flex items-center gap-6">
+<div class="max-w-7xl mx-auto px-6">
 
-                {% if user.is_authenticated and user.user_type == 'is_superuser' %}
-                    <a href="{% url 'admin_dashboard' %}" 
-                       class="nav-link">Admin Dashboard</a>
+<div class="flex justify-between items-center h-16">
 
-                {% elif user.is_authenticated %}
-                    <a href="{% url 'home' %}" class="nav-link">Home</a>
-                    <a href="{% url 'report_issue' %}" class="nav-link">Report Issue</a>
-                    <a href="#" class="nav-link text-red-400">Emergency</a>
-                    <a href="{% url 'dashboard' %}" class="nav-link">Dashboard</a>
-                    <a href="{% url 'rewards_dashboard' %}" class="nav-link">Rewards</a>
-                {% endif %}
-            </div>
 
-            <!-- Right Side -->
-            <div class="hidden md:flex items-center gap-4">
+<!-- LOGO -->
 
-                {% if user.is_authenticated %}
-                <div class="relative group">
-                    <button class="flex items-center gap-2 text-gray-300 hover:text-indigo-400 transition font-medium">
-                        👤 {{ user.username }}
-                    </button>
+<a href="{% url 'home' %}" class="text-2xl font-bold">
+Smart <span class="text-indigo-500">City</span>
+</a>
 
-                    <!-- Dropdown -->
-                    <div class="absolute right-0 mt-3 w-52 bg-gray-900 rounded-2xl shadow-2xl border border-gray-700
-                                opacity-0 invisible group-hover:opacity-100 group-hover:visible
-                                transition duration-200">
 
-                        {% if user.user_type != 'admin' %}
-                        <a href="{% url 'profile' %}" 
-                           class="dropdown-item">Profile</a>
+<!-- MENU -->
 
-                        <a href="{% url 'my_issues' %}" 
-                           class="dropdown-item">My Issues</a>
+<div class="hidden md:flex items-center gap-6">
 
-                        <hr class="my-1 border-gray-700">
-                        {% endif %}
+{% if user.is_authenticated and user.is_superuser %}
 
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit" 
-                                class="dropdown-item w-full text-left text-red-400">
-                                Logout
-                            </button>
-                        </form>
-                    </div>
-                </div>
+<a href="{% url 'admin_dashboard' %}" class="text-gray-300 hover:text-indigo-400">
+Admin Dashboard
+</a>
 
-                {% else %}
-                <a href="{% url 'login' %}" class="nav-link">
-                    Login
-                </a>
+{% elif user.is_authenticated %}
 
-                <a href="{% url 'register' %}"
-                   class="px-4 py-2 rounded-xl bg-indigo-600 text-white font-semibold 
-                          hover:bg-indigo-500 transition shadow-lg shadow-indigo-500/30">
-                    Sign Up
-                </a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
+<a href="{% url 'home' %}" class="text-gray-300 hover:text-indigo-400">
+Home
+</a>
+
+<a href="{% url 'report_issue' %}" class="text-gray-300 hover:text-indigo-400">
+Report Issue
+</a>
+
+<a href="{% url 'rewards_dashboard' %}" class="text-gray-300 hover:text-indigo-400">
+Rewards
+</a>
+
+{% endif %}
+
+</div>
+
+
+<!-- RIGHT SIDE -->
+
+<div class="flex items-center gap-4">
+
+{% if user.is_authenticated %}
+
+<div class="relative">
+
+<button id="profileBtn"
+class="flex items-center gap-2 hover:text-indigo-400">
+
+<!-- PROFILE IMAGE -->
+
+{% if user.profile_pic %}
+
+<img src="{{ user.profile_pic.url }}"
+class="w-8 h-8 rounded-full object-cover border border-gray-600">
+
+{% else %}
+
+<img src="https://ui-avatars.com/api/?name={{ user.username }}&background=6366f1&color=fff"
+class="w-8 h-8 rounded-full">
+
+{% endif %}
+
+<span>{{ user.username }}</span>
+
+</button>
+
+
+<!-- DROPDOWN -->
+
+<div id="profileMenu"
+class="hidden absolute right-0 mt-3 w-48 bg-gray-900 border border-gray-700 rounded-lg shadow-lg">
+
+<a href="{% url 'profile' %}"
+class="block px-4 py-2 text-sm hover:bg-gray-800">
+Profile
+</a>
+
+<a href="{% url 'my_issues' %}"
+class="block px-4 py-2 text-sm hover:bg-gray-800">
+My Issues
+</a>
+
+<form method="post" action="{% url 'logout' %}">
+{% csrf_token %}
+
+<button type="submit"
+class="block w-full text-left px-4 py-2 text-red-400 hover:bg-gray-800">
+Logout
+</button>
+
+</form>
+
+</div>
+
+</div>
+
+{% else %}
+
+<a href="{% url 'login' %}" class="text-gray-300 hover:text-indigo-400">
+Login
+</a>
+
+<a href="{% url 'register' %}"
+class="px-4 py-2 bg-indigo-600 rounded-lg hover:bg-indigo-500">
+Sign Up
+</a>
+
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
 </nav>
 
-<!-- 📦 Main Content -->
-<main class="pt-24 min-h-[80vh] px-4">
-    {% block content %}{% endblock %}
+
+<!-- MAIN -->
+
+<main class="pt-24 px-4">
+
+{% block content %}{% endblock %}
+
 </main>
 
-<!-- 🌙 Dark Footer -->
-<footer class="mt-20 bg-black border-t border-gray-800 py-10">
-    <div class="max-w-6xl mx-auto px-6 text-center text-gray-400">
-        <h3 class="text-lg font-semibold text-white mb-2">🏙 SmartCity Platform</h3>
-        <p class="text-sm">
-            Building better cities through citizen participation
-        </p>
-        <p class="mt-4 text-xs text-gray-600">
-            © 2024 SmartCity Platform. All rights reserved.
-        </p>
-    </div>
+
+<!-- FOOTER -->
+
+<footer class="mt-20 border-t border-gray-800 py-10 text-center text-gray-400">
+
+<h3 class="text-lg text-white font-semibold">
+🏙 SmartCity Platform
+</h3>
+
+<p class="text-sm">
+Building better cities through citizen participation
+</p>
+
 </footer>
 
-<style>
-.nav-link {
-    color: #d1d5db;
-    font-weight: 500;
-    transition: 0.3s;
-}
-.nav-link:hover {
-    color: #818cf8;
+
+<!-- JAVASCRIPT -->
+
+<script>
+
+const profileBtn = document.getElementById("profileBtn");
+const profileMenu = document.getElementById("profileMenu");
+
+if(profileBtn){
+
+profileBtn.addEventListener("click", function(){
+
+profileMenu.classList.toggle("hidden");
+
+});
+
 }
 
-.dropdown-item {
-    display: block;
-    padding: 8px 16px;
-    font-size: 14px;
-    color: #d1d5db;
-    transition: 0.2s;
-}
-.dropdown-item:hover {
-    background: #1f2937;
-    color: white;
-}
-</style>
+window.addEventListener("click", function(e){
 
-{% block extra_js %}{% endblock %}
+if(!profileBtn.contains(e.target) && !profileMenu.contains(e.target)){
+
+profileMenu.classList.add("hidden");
+
+}
+
+});
+
+</script>
+
 </body>
 </html>

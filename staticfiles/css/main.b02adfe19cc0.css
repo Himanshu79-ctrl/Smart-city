@@ -1,0 +1,186 @@
+/* Modern CSS with Animations */
+:root {
+    --primary: #4361ee;
+    --secondary: #3f37c9;
+    --success: #4cc9f0;
+    --danger: #f72585;
+    --warning: #f8961e;
+    --info: #4895ef;
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Body Styling */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    min-height: 100vh;
+}
+
+/* Main Content */
+.main-content {
+    padding-top: 80px;
+    min-height: calc(100vh - 200px);
+}
+
+/* Navigation */
+.navbar {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%) !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* Buttons */
+.btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    padding: 120px 0 80px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><polygon fill="rgba(255,255,255,0.05)" points="0,1000 1000,0 1000,1000"/></svg>');
+    background-size: cover;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+/* Feature Cards */
+.feature-card {
+    text-align: center;
+    padding: 2rem 1rem;
+    border-radius: 20px;
+    background: white;
+    transition: all 0.3s ease;
+}
+
+.feature-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.feature-icon i {
+    font-size: 2rem;
+    color: white;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+}
+
+/* Stats Section */
+.stats-section {
+    background: linear-gradient(135deg, #4361ee 0%, #3a0ca3 100%);
+    color: white;
+    border-radius: 20px;
+    padding: 4rem 0;
+    margin: 4rem 0;
+}
+
+.stat-number {
+    font-size: 3.5rem;
+    font-weight: bold;
+    background: linear-gradient(45deg, #fff, #e0e0e0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+/* Forms */
+.form-control, .form-select {
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    padding: 0.75rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(67, 97, 238, 0.25);
+}
+
+/* Animations */
+.animate-fade-in {
+    animation: fadeIn 0.8s ease-in;
+}
+
+.animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 100px 0 60px;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+}

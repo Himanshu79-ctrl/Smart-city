@@ -2,10 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
+from django.utils import timezone
 from django.db.models import Count, Q
 from .models import IssueReport, IssueCategory, EmergencyAlert, IssueVote, IssueComment
 from accounts.models import Department
-from rewards.models import CitizenProfile, PointsTransaction
+from rewards.models import CitizenRewardProfile, PointsTransaction
 from django.db.models import Sum
 
 def home(request):
@@ -15,66 +16,63 @@ def home(request):
     ).order_by('-created_at')[:3]
 
     # Emergency alerts (already present)
-    emergency_alerts = EmergencyAlert.objects.filter(is_active=True).order_by('-created_at')[:3]
+    # emergency_alerts = EmergencyAlert.objects.filter(is_active=True).order_by('-created_at')[:3]
 
     context = {
         'recent_issues': recent_issues,
-        'emergency_alerts': emergency_alerts,
+        # 'emergency_alerts': emergency_alerts,
         # Baaki context agar ho toh yahan add karo
     }
     return render(request, 'reports/home.html', context)
 
 @login_required
-def dashboard(request):
+def profile(request):
     user = request.user
-    
-    if user.user_type == 'citizen':
-        # Get user's profile for reward points
-        try:
-            profile = CitizenProfile.objects.get(user=user)
-            reward_points = profile.total_points
-        except CitizenProfile.DoesNotExist:
-            profile = CitizenProfile.objects.create(user=user)
-            reward_points = 0
-        
-        # Real data for citizen
-        user_issues = IssueReport.objects.filter(citizen=user)
-        total_issues = user_issues.count()
-        resolved_issues = user_issues.filter(status='resolved').count()
-        in_progress_issues = user_issues.filter(status='in_progress').count()
-        pending_issues = total_issues - resolved_issues
-        
-        # This month stats
-        from django.utils import timezone
-        from datetime import timedelta
-        month_start = timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-        this_month_issues = user_issues.filter(created_at__gte=month_start).count()
-        this_month_points = PointsTransaction.objects.filter(
-            user=user, 
-            created_at__gte=month_start,
-            points__gt=0
-        ).aggregate(total=Sum('points'))['total'] or 0
-        
-        context = {
-            'total_issues': total_issues,
-            'resolved_issues': resolved_issues,
-            'in_progress_issues': in_progress_issues,
-            'pending_issues': pending_issues,
-            'reward_points': reward_points,
-            'recent_issues': user_issues.order_by('-created_at')[:5],
-            'this_month_issues': this_month_issues,
-            'this_month_points': this_month_points,
-            'profile': profile,
-        }
-        
-    else:
-        context = {
-            'total_issues': 25,
-            'pending_issues': 8,
-            'resolved_issues': 17,
-        }
-    
-    return render(request, 'reports/dashboard.html', context)
+
+    # Reward Profile
+    profile, created = CitizenRewardProfile.objects.get_or_create(user=user)
+
+    reward_points = profile.total_points
+
+    # User Issues
+    user_issues = IssueReport.objects.filter(citizen=user)
+
+    total_issues = user_issues.count()
+    resolved_issues = user_issues.filter(status='resolved').count()
+    in_progress_issues = user_issues.filter(status='in_progress').count()
+    pending_issues = total_issues - resolved_issues
+
+    # Monthly stats
+    month_start = timezone.now().replace(
+        day=1, hour=0, minute=0, second=0, microsecond=0
+    )
+
+    this_month_issues = user_issues.filter(
+        created_at__gte=month_start
+    ).count()
+
+    this_month_points = PointsTransaction.objects.filter(
+        user=user,
+        created_at__gte=month_start,
+        points__gt=0
+    ).aggregate(total=Sum('points'))['total'] or 0
+
+    context = {
+        "profile": profile,
+        "reward_points": reward_points,
+
+        "total_issues": total_issues,
+        "resolved_issues": resolved_issues,
+        "in_progress_issues": in_progress_issues,
+        "pending_issues": pending_issues,
+
+        "recent_issues": user_issues.order_by("-created_at")[:5],
+
+        "this_month_issues": this_month_issues,
+        "this_month_points": this_month_points,
+    }
+
+    return render(request, "accounts/profile.html", context)
 
 @login_required
 def report_issue(request):
@@ -117,23 +115,23 @@ def report_issue(request):
                 photo=photo,
             )
             
-            # Award points for reporting issue
-            try:
-                profile = CitizenProfile.objects.get(user=request.user)
-                profile.issues_reported += 1
-                profile.total_points += category.points
-                profile.update_level()
-                profile.save()
+            # # Award points for reporting issue
+            # try:
+            #     profile = CitizenRewardProfile.objects.get(user=request.user)
+            #     profile.issues_reported += 1
+            #     profile.total_points += category.points
+            #     profile.update_level()
+            #     profile.save()
                 
-                PointsTransaction.objects.create(
-                    user=request.user,
-                    transaction_type='issue_reported',
-                    points=category.points,
-                    description=f'Points for reporting: {title}',
-                    related_issue=issue
-                )
-            except Exception as e:
-                print(f"Points error: {e}")
+            #     PointsTransaction.objects.create(
+            #         user=request.user,
+            #         transaction_type='issue_reported',
+            #         points=category.points,
+            #         description=f'Points for reporting: {title}',
+            #         related_issue=issue
+            #     )
+            # except Exception as e:
+            #     print(f"Points error: {e}")
             
             print(f"Issue created: {issue.tracking_id}")
             messages.success(request, f'Issue reported successfully! Tracking ID: {issue.tracking_id}')

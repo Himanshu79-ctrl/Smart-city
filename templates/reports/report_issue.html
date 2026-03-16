@@ -3,122 +3,194 @@
 
 {% block content %}
 
-<section class="max-w-4xl mx-auto px-6 pt-28 pb-24">
+<section class="max-w-2xl mx-auto px-4 pt-16 pb-6">
 
-    <div class="rounded-3xl p-10
-                bg-white dark:bg-white/5
-                border border-gray-200 dark:border-white/10
-                backdrop-blur-xl shadow-2xl">
+<div class="rounded-2xl p-4 bg-white dark:bg-white/5 border border-gray-200 dark:border-white/10 backdrop-blur-xl shadow-xl">
 
-        <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-8">
-            Report a Civic Issue
-        </h1>
+<h1 class="text-xl font-bold text-gray-900 dark:text-white mb-4">
+Report a Civic Issue
+</h1>
 
-        <form method="post" enctype="multipart/form-data" class="space-y-8">
-            {% csrf_token %}
+<form method="post" enctype="multipart/form-data" class="space-y-3">
+{% csrf_token %}
 
-            <!-- Title -->
-            <div>
-                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
-                    Issue Title
-                </label>
-                <input type="text" name="title" required
-                       placeholder="Broken street light near main market"
-                       class="w-full px-4 py-3 rounded-xl
-                              bg-gray-50 dark:bg-white/5
-                              border border-gray-300 dark:border-white/20
-                              text-gray-900 dark:text-white
-                              focus:outline-none focus:ring-2 focus:ring-indigo-500">
-            </div>
+<!-- Title -->
+<div>
+<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+Issue Title
+</label>
 
-            <!-- Category -->
-            <div>
-                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
-                    Category
-                </label>
-                <select name="category" required class="w-full px-4 py-3 rounded-xl
-                               bg-gray-50 dark:bg-gray-800
-                               border border-gray-300 dark:border-white/20
-                               text-gray-900 dark:text-white
-                               appearance-none
-                               focus:outline-none focus:ring-2 focus:ring-indigo-500">
-                
-                    <option value="">Select category</option>
-                    <option value="pothole">Pothole</option>
-                    <option value="garbage">Garbage</option>
-                    <option value="street_light">Street Light</option>
-                    <option value="water">Water Supply</option>
-                    <option value="drainage">Drainage</option>
-                    <option value="other">Other</option>
-                </select>
-                
-                
-            </div>
+<input type="text" name="title" required
+class="w-full px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/20 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+</div>
 
-            <!-- Description -->
-            <div>
-                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
-                    Description
-                </label>
-                <textarea name="description" rows="4" required
-                          placeholder="Describe the issue in detail..."
-                          class="w-full px-4 py-3 rounded-xl
-                                 bg-gray-50 dark:bg-white/5
-                                 border border-gray-300 dark:border-white/20
-                                 text-gray-900 dark:text-white
-                                 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-            </div>
+<!-- Category -->
+<div>
+<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+Category
+</label>
 
-            <!-- Location -->
-            <div>
-                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
-                    Location Address
-                </label>
-                <textarea name="location_address" rows="3" required
-                          placeholder="Enter exact location..."
-                          class="w-full px-4 py-3 rounded-xl
-                                 bg-gray-50 dark:bg-white/5
-                                 border border-gray-300 dark:border-white/20
-                                 text-gray-900 dark:text-white
-                                 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
-            </div>
+<select name="category" required
+class="w-full px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-gray-800 border border-gray-300 dark:border-white/20 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
 
-            <!-- Media Upload -->
-            <div>
-                <label class="block mb-2 font-medium text-gray-700 dark:text-gray-300">
-                    Upload Photo (Optional)
-                </label>
+<option value="">Select category</option>
+<option value="pothole">Pothole</option>
+<option value="garbage">Garbage</option>
+<option value="street_light">Street Light</option>
+<option value="water">Water Supply</option>
+<option value="drainage">Drainage</option>
+<option value="other">Other</option>
 
-                <label class="flex flex-col items-center justify-center
-                              border-2 border-dashed
-                              border-indigo-300 dark:border-white/20
-                              rounded-2xl p-10 cursor-pointer
-                              hover:bg-indigo-50 dark:hover:bg-white/5 transition">
+</select>
+</div>
 
-                    <span class="text-gray-600 dark:text-gray-400">
-                        Click to upload image
-                    </span>
+<!-- Description -->
+<div>
+<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+Description
+</label>
 
-                    <input type="file" name="photo" accept="image/*"
-                           class="hidden" id="photo-input">
-                </label>
+<textarea name="description" rows="2" required
+class="w-full px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/20 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+</div>
 
-                <div id="photo-preview" class="mt-4 flex gap-3 flex-wrap"></div>
-            </div>
+<!-- Location -->
+<div>
 
-            <!-- Submit -->
-            <button type="submit"
-                    class="w-full py-4 rounded-2xl font-semibold
-                           bg-indigo-600 hover:bg-indigo-500
-                           text-white shadow-lg
-                           hover:scale-[1.02] transition">
-                Submit Report
-            </button>
+<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+Location
+</label>
 
-        </form>
+<textarea id="location_address" name="location_address" rows="2"
+class="w-full px-3 py-1.5 rounded-lg bg-gray-50 dark:bg-white/5 border border-gray-300 dark:border-white/20 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
 
-    </div>
+<button type="button" onclick="getLocation()"
+class="mt-2 px-3 py-1 rounded-md bg-indigo-600 hover:bg-indigo-500 text-white text-xs">
+📍 Fetch Location
+</button>
 
+<input type="hidden" name="latitude" id="latitude">
+<input type="hidden" name="longitude" id="longitude">
+
+</div>
+
+<!-- Photo Upload -->
+<div>
+
+<label class="block mb-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+Upload Photo
+</label>
+
+<label class="flex flex-col items-center justify-center border border-dashed border-indigo-300 dark:border-white/20 rounded-lg p-3 cursor-pointer hover:bg-indigo-50 dark:hover:bg-white/5">
+
+<span id="file-label" class="text-gray-600 dark:text-gray-400 text-xs">
+Click to upload image
+</span>
+
+<input type="file" name="photo" accept="image/*" class="hidden" id="photo-input">
+
+</label>
+
+<div id="photo-preview" class="mt-2"></div>
+
+</div>
+
+<!-- Submit -->
+<button type="submit"
+class="w-full py-2 rounded-lg font-semibold bg-indigo-600 hover:bg-indigo-500 text-white text-sm shadow">
+Submit Report
+</button>
+
+</form>
+</div>
 </section>
+
+
+<script>
+
+const photoInput = document.getElementById("photo-input");
+const preview = document.getElementById("photo-preview");
+const fileLabel = document.getElementById("file-label");
+
+photoInput.addEventListener("change", function(){
+
+preview.innerHTML = "";
+
+const file = this.files[0];
+
+if(file){
+
+fileLabel.innerText = "Selected: " + file.name;
+
+const reader = new FileReader();
+
+reader.onload = function(e){
+
+const img = document.createElement("img");
+
+img.src = e.target.result;
+
+img.className = "w-28 h-28 object-cover rounded-lg border shadow";
+
+preview.appendChild(img);
+
+};
+
+reader.readAsDataURL(file);
+
+}
+
+});
+
+</script>
+
+
+<script>
+
+function getLocation(){
+
+const locationBox = document.getElementById("location_address");
+
+if(!navigator.geolocation){
+alert("Geolocation not supported");
+return;
+}
+
+locationBox.value = "Fetching location...";
+
+navigator.geolocation.getCurrentPosition(
+
+function(position){
+
+const lat = position.coords.latitude;
+const lon = position.coords.longitude;
+
+document.getElementById("latitude").value = lat;
+document.getElementById("longitude").value = lon;
+
+fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}`)
+.then(res => res.json())
+.then(data => {
+
+if(data.display_name){
+locationBox.value = data.display_name;
+}else{
+locationBox.value = lat + ", " + lon;
+}
+
+});
+
+},
+
+function(){
+locationBox.value = "";
+alert("Unable to fetch location");
+}
+
+);
+
+}
+
+</script>
 
 {% endblock %}

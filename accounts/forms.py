@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import CustomUser
 
+
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True)
     phone = forms.CharField(max_length=15, required=True)
@@ -27,3 +28,8 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+    
+class UserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['first_name', 'email','phone', 'profile_pic']

@@ -2,7 +2,7 @@ from django.db import models
 from django.utils import timezone
 from accounts.models import CustomUser
 
-class CitizenProfile(models.Model):
+class CitizenRewardProfile(models.Model):
     LEVEL_CHOICES = [
         ('beginner', 'Beginner'),
         ('contributor', 'Contributor'),
@@ -10,9 +10,9 @@ class CitizenProfile(models.Model):
         ('hero', 'Hero'),
     ]
     
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE,related_name="reward_profile")
     total_points = models.IntegerField(default=0)
-    level = models.CharField(max_length=20, choices=LEVEL_CHOICES, default='beginner')
+    level = models.CharField(max_length=50, choices=LEVEL_CHOICES, default='beginner')
     issues_reported = models.IntegerField(default=0)
     issues_resolved = models.IntegerField(default=0)
     joined_at = models.DateTimeField(auto_now_add=True,null=True, blank=True)
@@ -39,7 +39,7 @@ class PointsTransaction(models.Model):
     ]
     
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
+    transaction_type = models.CharField(max_length=50, choices=TRANSACTION_TYPES)
     points = models.IntegerField()
     description = models.TextField()
     related_issue = models.ForeignKey('reports.IssueReport', on_delete=models.SET_NULL, null=True, blank=True)
@@ -59,7 +59,7 @@ class Reward(models.Model):
     
     name = models.CharField(max_length=100)
     description = models.TextField()
-    reward_type = models.CharField(max_length=20, choices=REWARD_TYPES)
+    reward_type = models.CharField(max_length=30, choices=REWARD_TYPES)
     points_required = models.IntegerField()
     image = models.ImageField(upload_to='rewards/', null=True, blank=True)
     is_active = models.BooleanField(default=True)
