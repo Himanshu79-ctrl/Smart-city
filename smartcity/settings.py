@@ -184,7 +184,7 @@ STORAGES = {
 
 LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = "profile"
-LOGOUT_REDIRECT_URL = "home"
+LOGOUT_REDIRECT_URL = "login"
 
 
 SITE_ID = 1
@@ -231,7 +231,6 @@ SESSION_SAVE_EVERY_REQUEST = True  # already True
 SESSION_EXPIRE_AT_BROWSER_CLOSE = False  # False = remember me
 
 # Security
-SESSION_COOKIE_SECURE = False  # Development mein False rakho
 # Production mein: 
 # SESSION_COOKIE_SECURE = True  # Jab HTTPS lage
 
