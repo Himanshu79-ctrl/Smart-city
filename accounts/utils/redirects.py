@@ -8,4 +8,4 @@ def redirect_user_dashboard(user):
     if user.user_type == "department_staff":
         return redirect("staff_dashboard")
 
-    return redirect("profile")
+    return redirect("/")
