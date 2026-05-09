@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="max-w-5xl mx-auto mt-10 px-6">
+
+    <!-- CARD -->
+    <div class="bg-[#0f172a] rounded-2xl shadow-lg p-8 text-white">
+
+        <!-- HEADER -->
+        <div class="flex items-center justify-between mb-8">
+
+            <div class="flex items-center gap-5">
+
+                {% if staff.user.profile_pic %}
+                    <img src="{{ staff.user.profile_pic.url }}"
+                         class="w-24 h-24 rounded-full object-cover border-2 border-indigo-500">
+                {% else %}
+                    <img src="https://ui-avatars.com/api/?name={{ staff.user.username }}"
+                         class="w-24 h-24 rounded-full">
+                {% endif %}
+
+                <div>
+                    <h2 class="text-2xl font-bold">
+                        {{ staff.user.username }}
+                    </h2>
+
+                    <p class="text-gray-400">
+                        {{ staff.department }}
+                    </p>
+
+                    <span class="text-xs bg-green-600 px-3 py-1 rounded-full">
+                        Active
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- ACTION -->
+            <form method="POST" action="{% url 'delete_staff' staff.id %}">
+                {% csrf_token %}
+            
+                <button type="submit" class="bg-red-600 px-4 py-2 rounded hover:bg-red-500">
+                    Delete
+                </button>
+            </form>
+
+        </div>
+
+        <!-- GRID INFO -->
+        <div class="grid md:grid-cols-2 gap-6">
+
+            <!-- PERSONAL INFO -->
+            <div class="bg-white/5 p-5 rounded-xl">
+                <h3 class="text-lg font-semibold mb-4 text-indigo-400">
+                    Personal Information
+                </h3>
+
+                <div class="space-y-2 text-sm">
+                    <p><span class="text-gray-400">Username:</span> {{ staff.user.username }}</p>
+                    <p><span class="text-gray-400">Email:</span> {{ staff.user.email }}</p>
+                    <p><span class="text-gray-400">Phone:</span> {{ staff.user.phone }}</p>
+                    <p><span class="text-gray-400">Address:</span> {{ staff.user.address }}</p>
+                </div>
+            </div>
+
+            <!-- WORK INFO -->
+            <div class="bg-white/5 p-5 rounded-xl">
+                <h3 class="text-lg font-semibold mb-4 text-purple-400">
+                    Work Information
+                </h3>
+
+                <div class="space-y-2 text-sm">
+                    <p><span class="text-gray-400">Department:</span> {{ staff.department }}</p>
+                    <p><span class="text-gray-400">Employee ID:</span> {{ staff.employee_id }}</p>
+                    <p><span class="text-gray-400">Joining Date:</span> {{ staff.date_of_joining }}</p>
+                    <p>
+                        <span class="text-gray-400">Availability:</span>
+                        {% if staff.is_available %}
+                            <span class="text-green-400">Available</span>
+                        {% else %}
+                            <span class="text-red-400">Busy</span>
+                        {% endif %}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EXTRA SECTION -->
+        <div class="mt-8 bg-white/5 p-5 rounded-xl">
+
+            <h3 class="text-lg font-semibold mb-4 text-pink-400">
+                Activity Summary
+            </h3>
+
+            <p class="text-gray-400 text-sm">
+                (Future Feature 🚀)  
+                Here you can show:
+                • Assigned tasks  
+                • Completed work  
+                • Performance stats  
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

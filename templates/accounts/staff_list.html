@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="p-8">
+
+    <h2 class="text-2xl font-bold mb-6 text-white">👥 All Staff</h2>
+
+    <div class="bg-white/5 rounded-2xl p-6">
+
+        <table class="w-full text-left text-white">
+
+            <thead>
+                <tr class="border-b border-white/10 text-gray-300">
+                    <th class="py-3">Staff</th>
+                    <th>Phone</th>
+                    <th>Department</th>
+                    <th>Employee ID</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+                {% for s in staff %}
+                <tr class="border-b border-white/5 hover:bg-white/5 transition">
+
+                    <!-- PROFILE -->
+                    <td class="py-3 flex items-center gap-3">
+
+                        {% if s.user.profile_pic %}
+                            <img src="{{ s.user.profile_pic.url }}"
+                                 class="w-10 h-10 rounded-full object-cover">
+                        {% else %}
+                            <img src="https://ui-avatars.com/api/?name={{ s.user.username }}"
+                                 class="w-10 h-10 rounded-full">
+                        {% endif %}
+
+                        <span>{{ s.user.username }}</span>
+
+                    </td>
+
+                    <!-- PHONE -->
+                    <td>{{ s.user.phone }}</td>
+
+                    <!-- DEPARTMENT -->
+                    <td>{{ s.department }}</td>
+
+                    <!-- EMPLOYEE ID -->
+                    <td>{{ s.employee_id }}</td>
+
+                    <!-- ACTION -->
+                    <td>
+                        <a href="{% url 'staff_detail' s.id %}"
+                           class="text-indigo-400 hover:underline">
+                            View
+                        </a>
+                    </td>
+
+                </tr>
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

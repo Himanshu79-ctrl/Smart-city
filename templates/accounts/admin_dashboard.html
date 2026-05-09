@@ -1,162 +1,186 @@
 {% extends "base.html" %}
 {% block content %}
 
-<section class="max-w-7xl mx-auto px-6 py-4">
+<div class="flex min-h-screen bg-[#020617] text-white">
 
-    <h1 class="text-4xl font-bold text-center mb-12">
-        Admin Control Center
-    </h1>
+    <!-- ================= SIDEBAR ================= -->
+    <aside class="w-64 bg-[#020617] border-r border-white/10 p-6 space-y-6">
+
+        <h2 class="text-2xl font-bold text-indigo-400">Admin Panel</h2>
+
+        <nav class="space-y-3">
+
+            <a href="{% url 'admin_dashboard' %}"
+               class="block px-4 py-2 rounded-xl bg-indigo-600">
+                📊 Dashboard
+            </a>
+
+            <a href="{% url 'add_staff' %}"
+               class="block px-4 py-2 rounded-xl hover:bg-white/10">
+                ➕ Add Staff
+            </a>
+
+            <a href="{% url 'staff_list' %}"
+               class="block px-4 py-2 rounded-xl hover:bg-white/10">
+                👥 All Staff
+            </a>
+
+            <a href="{% url 'admin:index' %}"
+               class="block px-4 py-2 rounded-xl hover:bg-white/10">
+                ⚙ Django Admin
+            </a>
+
+        </nav>
+
+    </aside>
 
 
-    <!-- STATS -->
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="flex-1 p-8">
 
-    <div class="grid md:grid-cols-4 gap-6 mb-16">
-
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-3xl text-center">
-            <h2 class="text-3xl font-bold text-indigo-400">{{ total_issues }}</h2>
-            <p class="text-gray-300">Total Issues</p>
+        <!-- HEADER -->
+        <div class="flex justify-between items-center mb-10">
+            <h1 class="text-3xl font-bold">Dashboard Overview</h1>
+            <p class="text-gray-400">Welcome, {{ request.user.username }}</p>
         </div>
 
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-3xl text-center">
-            <h2 class="text-3xl font-bold text-yellow-400">{{ pending_issues }}</h2>
-            <p class="text-gray-300">Pending</p>
+
+        <!-- ================= STATS ================= -->
+        <div class="grid md:grid-cols-4 gap-6 mb-10">
+
+            <div class="bg-[#0f172a] p-6 rounded-2xl text-center border border-white/10">
+                <h2 class="text-3xl text-indigo-400 font-bold">{{ total_issues }}</h2>
+                <p class="text-gray-400">Total Issues</p>
+            </div>
+
+            <div class="bg-[#0f172a] p-6 rounded-2xl text-center border border-white/10">
+                <h2 class="text-3xl text-red-400 font-bold">{{ pending_issues }}</h2>
+                <p class="text-gray-400">Pending</p>
+            </div>
+
+            <div class="bg-[#0f172a] p-6 rounded-2xl text-center border border-white/10">
+                <h2 class="text-3xl text-green-400 font-bold">{{ resolved_issues }}</h2>
+                <p class="text-gray-400">Resolved</p>
+            </div>
+
+            <div class="bg-[#0f172a] p-6 rounded-2xl text-center border border-white/10">
+                <h2 class="text-3xl text-pink-400 font-bold">{{ today_issues }}</h2>
+                <p class="text-gray-400">Today</p>
+            </div>
+
         </div>
 
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-3xl text-center">
-            <h2 class="text-3xl font-bold text-green-400">{{ resolved_issues }}</h2>
-            <p class="text-gray-300">Resolved</p>
-        </div>
 
-        <div class="bg-white/5 backdrop-blur-xl border border-white/10 p-6 rounded-3xl text-center">
-            <h2 class="text-3xl font-bold text-pink-400">{{ today_issues }}</h2>
-            <p class="text-gray-300">Today's Reports</p>
-        </div>
+        <!-- ================= FILTER ================= -->
+        <form method="GET" class="flex gap-4 mb-8">
 
-    </div>
+            <select name="city"
+                class="bg-[#0f172a] border border-white/10 px-4 py-2 rounded-xl">
+                <option value="">All Cities</option>
+                {% for c in all_cities %}
+                <option value="{{ c }}">{{ c }}</option>
+                {% endfor %}
+            </select>
 
+            <select name="status"
+                class="bg-[#0f172a] border border-white/10 px-4 py-2 rounded-xl">
+                <option value="">All Status</option>
+                <option value="reported">Reported</option>
+                <option value="assigned">Assigned</option>
+                <option value="in_progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+            </select>
 
-    <!-- FILTER -->
+            <button class="bg-indigo-600 px-6 py-2 rounded-xl">
+                Filter
+            </button>
 
-    <form method="GET" class="flex flex-wrap gap-4 mb-10">
-
-        <select name="city" class="px-4 py-2 rounded-xl bg-white/10 border border-white/20">
-
-            <option value="">All Cities</option>
-
-            {% for c in all_cities %}
-            <option value="{{ c }}">{{ c }}</option>
-            {% endfor %}
-
-        </select>
-
-
-        <select name="status" class="px-4 py-2 rounded-xl bg-white/10 border border-white/20">
-
-            <option value="">All Status</option>
-
-            <option class="bg-black" value="reported">Reported</option>
-            <option class="bg-black" value="verified">Verified</option>
-            <option class="bg-black" value="assigned">Assigned</option>
-            <option class="bg-black" value="in_progress">In Progress</option>
-            <option class="bg-black" value="resolved">Resolved</option>
-            <option class="bg-black" value="closed">Closed</option>
-
-        </select>
+        </form>
 
 
-        <button class="bg-indigo-600 px-6 py-2 rounded-xl">
+        <!-- ================= ISSUES ================= -->
+        <div class="space-y-6">
 
-            Filter
+            {% for issue in issues %}
 
-        </button>
+            <div class="flex gap-6 bg-[#0f172a] p-5 rounded-2xl border border-white/10">
 
-    </form>
+                <!-- IMAGE -->
+                <div class="w-44 h-32 flex-shrink-0">
+                    {% if issue.photo %}
+                        <img src="{{ issue.photo.url }}"
+                             class="w-full h-full object-cover rounded-xl">
+                    {% else %}
+                        <div class="w-full h-full bg-gray-700 rounded-xl flex items-center justify-center text-sm text-gray-400">
+                            No Image
+                        </div>
+                    {% endif %}
+                </div>
 
+                <!-- DETAILS -->
+                <div class="flex-1">
 
-    <!-- RECENT ISSUES -->
+                    <!-- TITLE + STATUS -->
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xl font-semibold">{{ issue.title }}</h3>
 
-    <div class="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-6 mb-16">
+                        <span class="px-3 py-1 rounded-full text-xs
+                            {% if issue.status == 'resolved' %} bg-green-600
+                            {% elif issue.status == 'in_progress' %} bg-blue-500
+                            {% elif issue.status == 'assigned' %} bg-yellow-500
+                            {% else %} bg-red-500 {% endif %}">
+                            {{ issue.status }}
+                        </span>
+                    </div>
 
-        <h2 class="text-2xl font-semibold mb-6">
-            Recent Issues
-        </h2>
+                    <!-- DESC -->
+                    <p class="text-gray-400 mt-1">
+                        {{ issue.description|truncatechars:120 }}
+                    </p>
 
-        <table class="w-full text-left">
+                    <!-- INFO -->
+                    <div class="grid grid-cols-2 gap-2 mt-3 text-sm text-gray-300">
 
-            <thead>
+                        <p>👤 {{ issue.citizen.username }}</p>
+                        <p>🏢 {{ issue.assigned_department.name }}</p>
 
-                <tr class="border-b border-white/10">
-                    <th class="py-3">Tracking ID</th>
-                    <th>Title</th>
-                    <th>Location</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
+                        <p>📍 {{ issue.location_address }}</p>
+                        <p>🕒 {{ issue.created_at|date:"d M Y, h:i A" }}</p>
 
-            </thead>
+                    </div>
 
-            <tbody>
-
-                {% for issue in issues %}
-
-                <tr class="border-b border-white/5">
-
-                    <td class="py-3">{{ issue.tracking_id }}</td>
-                    <td>{{ issue.title }}</td>
-                    <td>{{ issue.location_address }}</td>
-                    <td>{{ issue.status }}</td>
-
-                    <td>
+                    <!-- ACTIONS -->
+                    <div class="mt-4 flex gap-3">
 
                         <a href="{% url 'admin:reports_issuereport_change' issue.id %}"
-                            class="text-indigo-400 hover:underline">Edit</a>
-                    </td>
-                </tr>
+                           class="bg-indigo-600 px-4 py-1 rounded-lg text-sm hover:bg-indigo-500">
+                            Edit
+                        </a>
 
-                {% empty %}
+                        <form method="POST" action="{% url 'mark_issue_status' issue.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="status" value="resolved">
+                            <button class="bg-green-600 px-4 py-1 rounded-lg text-sm hover:bg-green-500">
+                                Resolve
+                            </button>
+                        </form>
 
-                <tr>
-                    <td colspan="5" class="py-4 text-center text-gray-400">
-                        No Issues Found
-                    </td>
-                </tr>
+                    </div>
 
-                {% endfor %}
+                </div>
 
-            </tbody>
+            </div>
 
-        </table>
+            {% empty %}
 
-    </div>
+            <p class="text-center text-gray-400">No issues found</p>
 
+            {% endfor %}
 
-    <!-- QUICK ACTIONS -->
+        </div>
 
-    <div class="grid md:grid-cols-3 gap-6">
+    </main>
 
-        <a href="{% url 'admin:reports_issuereport_add' %}"
-            class="bg-green-600 p-6 rounded-2xl text-center hover:scale-105 transition">
-
-            ➕ Add Issue
-
-        </a>
-
-        <a href="{% url 'staff_register' %}"
-            class="bg-purple-600 p-6 rounded-2xl text-center hover:scale-105 transition">
-
-            👤 Add Staff
-
-        </a>
-
-        <a href="{% url 'admin:index' %}" class="bg-gray-900 p-6 rounded-2xl text-center hover:scale-105 transition">
-
-            ⚙ Django Admin
-
-        </a>
-
-    </div>
-
-
-</section>
+</div>
 
 {% endblock %}

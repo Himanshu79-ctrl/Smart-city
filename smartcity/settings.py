@@ -2,6 +2,8 @@ from pathlib import Path
 from decouple import config
 import cloudinary
 import os
+import dj_database_url
+
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -12,11 +14,18 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-smartcity-platform-2024-secret-key-here'
-DEBUG = True
+SECRET_KEY = config('SECRET_KEY')
+DEBUG = config('DEBUG', default=False, cast=bool)
  
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '.onrender.com',
+]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com"
+]
 
 CLOUDINARY_STORAGE = {
     "CLOUD_NAME": config("CLOUDINARY_CLOUD_NAME"),
@@ -106,18 +115,22 @@ WSGI_APPLICATION = 'smartcity.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': config('DB_NAME'),
-        'USER': config('DB_USER'),
-        'PASSWORD': config('DB_PASSWORD'),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='5432'),
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': config('DB_NAME'),
+#         'USER': config('DB_USER'),
+#         'PASSWORD': config('DB_PASSWORD'),
+#         'HOST': config('DB_HOST', default='localhost'),
+#         'PORT': config('DB_PORT', default='5432'),
         
-    }
+#     }
+# }
+DATABASES = {
+    'default': dj_database_url.config(
+        default=config('DATABASE_URL')
+    )
 }
-
 
 
 # Password validation
@@ -207,7 +220,8 @@ SESSION_ENGINE = 'django.contrib.sessions.backends.db'  # default yahi hai
 SESSION_COOKIE_NAME = 'sessionid'  # default name
 SESSION_COOKIE_PATH = '/'  # poori site pe kaam karega
 SESSION_COOKIE_DOMAIN = None  # None means current domain
-SESSION_COOKIE_SECURE = False  # True in production with HTTPS
+# SESSION_COOKIE_SECURE = False  # True in production with HTTPS
+SESSION_COOKIE_SECURE = not DEBUG  # Automatically secure in production
 SESSION_COOKIE_HTTPONLY = True  # JavaScript se access na ho
 SESSION_COOKIE_SAMESITE = 'Lax'  # CSRF protection
 

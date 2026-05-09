@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.conf import settings
+import uuid
+
 
 class CustomUser(AbstractUser):
     USER_TYPE_CHOICES = (
@@ -27,13 +29,20 @@ class Department(models.Model):
         return self.name
 
 class Worker(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="worker")
-    department = models.ForeignKey(Department, on_delete=models.CASCADE)
-    specialization = models.CharField(max_length=100, blank=True)
-    is_available = models.BooleanField(default=True)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
+    department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True, blank=True)
     
+    employee_id = models.CharField(max_length=20, unique=True, blank=True)
+    
+    date_of_joining = models.DateField(blank=True, null=True)
+
+    def save(self, *args, **kwargs):
+        if not self.employee_id:
+            self.employee_id = "EMP" + str(uuid.uuid4().hex[:6]).upper()
+        super().save(*args, **kwargs)
+
     def __str__(self):
-        return f"{self.user.get_full_name()} - {self.department.name}"
+        return f"{self.user.username} - {self.employee_id}"
     
 class CitizenProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
