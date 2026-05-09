@@ -7,7 +7,7 @@ import debug_toolbar
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('accounts.urls')),
-    path('accounts/social/', include('allauth.urls')),  # Google login
+    #path('accounts/social/', include('allauth.urls')),  # Google login
     path('reports/', include('reports.urls')),
     path('rewards/', include('rewards.urls')),
     path('notifications/', include('notifications.urls')),
